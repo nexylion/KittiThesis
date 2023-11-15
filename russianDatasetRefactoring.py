@@ -1,8 +1,6 @@
-
 from glob import glob
 from pathlib import Path
 import re
-import cv2
 
 import argparse
 
@@ -10,13 +8,6 @@ from PIL import Image
 
 errorCounts = 0
 
-
-def imagetoBinary(path):
-
-    image = cv2.imread(path)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]  # bináris kép készitése
-    cv2.imwrite("./images/" + Path(path).stem + ".png", thresh)
 
 def xmlCreator(path):
     f = open(path, "r")
@@ -49,28 +40,21 @@ def xmlCreator(path):
     w.write(xml)
     w.close()
 
-if __name__ == '__main__':
-    #alapértelmezett utvonalak a gyors teszteléshez
-    imgPath = "/home/nexylion/Letöltések/HKR_Dataset_Words_Public/20200923_Dataset_Words_Public/img"
-    textPath = "/home/nexylion/Letöltések/HKR_Dataset_Words_Public/20200923_Dataset_Words_Public/ann"
-    #argument kezelés
-    argParser = argparse.ArgumentParser()
-    argParser.add_argument("--imgpath", nargs='?', help="path to images", default=imgPath)
-    argParser.add_argument("--img", action='store_true')
-    argParser.add_argument("--xml", action='store_true')
-    argParser.add_argument("--textpath", nargs='?', help="path to text", default=textPath)
-    args = argParser.parse_args()
-    if (args.img == False and args.xml == False):
-        print("Use '--img' if you want binarize images or '--xml' if you want to create the xml files")
 
-    if (args.img):
-        for imgpath in sorted(glob(imgPath + "/*.jpg")):
-            imagetoBinary(imgpath)
-    if (args.xml):
-        images = glob("./images/*.png")
-        for textpath in sorted(glob(textPath + "/*.json")):
-            imgPath = "./images/" + Path(textpath).stem + ".png"
-            if imgPath in images:
-                xmlCreator(textpath)
-            else:
-                print("no img found for this file " + Path(textpath).name)
+if __name__ == '__main__':
+
+    # argument kezelés
+    argParser = argparse.ArgumentParser()
+    argParser.add_argument("--imgpath", help="path to images")
+    argParser.add_argument("--textpath", help="path to text")
+    args = argParser.parse_args()
+
+    imgPath = args.imgpath
+    textPath = args.textpath
+    images = glob(imgPath + "/*.jpg")
+    for textpath in sorted(glob(textPath + "/*.json")):
+        imgPath = imgPath + + Path(textpath).stem + ".jpg"
+        if imgPath in images:
+            xmlCreator(textpath)
+        else:
+            print("no img found for this file " + Path(textpath).name)

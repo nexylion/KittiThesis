@@ -1,3 +1,4 @@
+import argparse
 from pathlib import Path
 import re
 from glob import glob
@@ -46,11 +47,21 @@ def readXml(xmlPath):
 
 
 if __name__ == '__main__':
+
+
+    # argument kezelés
+    argParser = argparse.ArgumentParser()
+    argParser.add_argument("--imgpath", help="path to images")
+    argParser.add_argument("--textpath", help="path to text")
+    args = argParser.parse_args()
+
+    imgPath = args.imgpath
+    textPath = args.textpath
     unicodes = []
-    for file in sorted(glob("/home/nexylion/Letöltések/xml/*.xml")):
+    for file in sorted(glob(textPath+"/*.xml")):
         unicodes = unicodes + readXml(file)
     i=0
-    imgPaths = sorted(glob("/home/nexylion/Letöltések/lines/*.png"))
+    imgPaths = sorted(glob(imgPath+"/*.png"))
     for unicode in unicodes:
         xmlCreator(imgPaths[i], unicode)
         i+=1
