@@ -13,14 +13,13 @@ def dgrlFileread(path,counter): # dgrl formátumú fájl beolvasása és formáz
     file = open(path, "rb")
     dgrlhsize, = struct.unpack('i', file.read(4))
     dgrlcode = file.read(8).decode().rstrip("\x00")
-    #dgrlcode, = struct.unpack('xb4s', code)
     illuslen = dgrlhsize - 36
     illustr = file.read(illuslen).decode().rstrip("\x00")
     codetype = file.read(20).decode().rstrip("\x00")
     codelen, = struct.unpack('h', file.read(2))
     bittspp, = struct.unpack('h', file.read(2))
 
-    #ezek után a kép adatai jön
+    #ezek után az oldal adatai jönnek
     pageHei, = struct.unpack('i', file.read(4))
     pageWid, = struct.unpack('i', file.read(4))
     lineNumber, = struct.unpack('i', file.read(4))
@@ -66,9 +65,9 @@ def dgrlFileread(path,counter): # dgrl formátumú fájl beolvasása és formáz
 
 
 if __name__ == '__main__':
-    path = "/home/nexylion/Letöltések/HWDB2.0Test/"
+
     argParser = argparse.ArgumentParser()
-    argParser.add_argument("--path", nargs='?', help="path to dgrl files", default=imgPath)
+    argParser.add_argument("--path", nargs='?', help="path to dgrl files")
 
     args = argParser.parse_args()
     if args.path:

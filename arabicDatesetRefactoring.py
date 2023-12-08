@@ -83,23 +83,23 @@ def xmlCreator(path):
 
 
 if __name__ == '__main__':
-    imgPath = "/home/nexylion/Letöltések/KHATT/KHATT_v1.0/LineImages_v1.0/*/*"
-    textPath = "/home/nexylion/Letöltések/KHATT/KHATT_v1.0/GroundTruth_v1.0/UniqueTextUnicodeTruthValues-v1.0/*"
 
     argParser = argparse.ArgumentParser()
-    argParser.add_argument("--imgpath", nargs='?', help="path to images", default=imgPath)
+    argParser.add_argument("--imgpath", nargs='?', help="path to images")
     argParser.add_argument("--img", action='store_true')
     argParser.add_argument("--xml", action='store_true')
-    argParser.add_argument("--textpath", nargs='?', help="path to text", default=textPath)
+    argParser.add_argument("--textpath", nargs='?', help="path to text")
 
     args = argParser.parse_args()
     if (args.img == False and args.xml == False):
         print("Use '--img' if you want crop images or '--xml' if you want to create the xml files")
 
     if (args.img):
+        imgPath=args.imgpath
         for imgpath in sorted(glob(imgPath + "/*.tif")):
             imageCropping(imgpath)
     if (args.xml):
+        textPath=args.textpath
         images = glob("./images/*.png")
         for textpath in sorted(glob(textPath + "/*.txt")):
             imgPath = "./images/" + Path(textpath).stem + ".png"
