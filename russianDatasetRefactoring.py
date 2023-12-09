@@ -53,7 +53,7 @@ if __name__ == '__main__':
     textPath = args.textpath
     images = glob(imgPath + "/*.jpg")
     for textpath in sorted(glob(textPath + "/*.json")):
-        imgPath = imgPath + + Path(textpath).stem + ".jpg"
+        imgPath = imgPath + Path(textpath).stem + ".jpg"
         if imgPath in images:
             xmlCreator(textpath)
         else:

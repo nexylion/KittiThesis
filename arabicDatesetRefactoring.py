@@ -1,4 +1,3 @@
-
 from glob import glob
 from pathlib import Path
 
@@ -38,8 +37,8 @@ def imageCropping(path):
                     upMost = y
                 if y + h > downMost:
                     downMost = y + h
-        #       cv2.rectangle(image, (x, y), (x + w, y + h), (36, 255, 12), 2)
 
+        # kirajzolás
         # cv2.rectangle(image, (leftMost,upMost) , (rightMost,downMost), (124,252,0), 16)
         # cv2.imshow('image', image)
         # cv2.waitKey()
@@ -95,11 +94,11 @@ if __name__ == '__main__':
         print("Use '--img' if you want crop images or '--xml' if you want to create the xml files")
 
     if (args.img):
-        imgPath=args.imgpath
+        imgPath = args.imgpath
         for imgpath in sorted(glob(imgPath + "/*.tif")):
             imageCropping(imgpath)
     if (args.xml):
-        textPath=args.textpath
+        textPath = args.textpath
         images = glob("./images/*.png")
         for textpath in sorted(glob(textPath + "/*.txt")):
             imgPath = "./images/" + Path(textpath).stem + ".png"

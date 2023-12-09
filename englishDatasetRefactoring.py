@@ -7,7 +7,7 @@ from PIL import Image
 
 
 # ennél a datasetnél a képek már jó formátumban voltak de az xml dokumentumot átt kell formálni.
-def xmlCreator( imgPath, text):
+def xmlCreator(imgPath, text):
     img = Image.open(imgPath)  # beolvasni a képet a sorról
     filename = Path(imgPath).stem
     # Page xml template
@@ -48,7 +48,6 @@ def readXml(xmlPath):
 
 if __name__ == '__main__':
 
-
     # argument kezelés
     argParser = argparse.ArgumentParser()
     argParser.add_argument("--imgpath", help="path to images")
@@ -58,10 +57,10 @@ if __name__ == '__main__':
     imgPath = args.imgpath
     textPath = args.textpath
     unicodes = []
-    for file in sorted(glob(textPath+"/*.xml")):
+    for file in sorted(glob(textPath + "/*.xml")):
         unicodes = unicodes + readXml(file)
-    i=0
-    imgPaths = sorted(glob(imgPath+"/*.png"))
+    i = 0
+    imgPaths = sorted(glob(imgPath + "/*.png"))
     for unicode in unicodes:
         xmlCreator(imgPaths[i], unicode)
-        i+=1
+        i += 1

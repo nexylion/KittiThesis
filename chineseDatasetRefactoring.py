@@ -7,8 +7,8 @@ import cv2
 import numpy
 
 
-
-def dgrlFileread(path,counter): # dgrl formátumú fájl beolvasása és formázása (http://www.nlpr.ia.ac.cn/databases/Download/DGRLRead.cpp.pdf alapján)
+def dgrlFileread(path,
+                 counter):  # dgrl formátumú fájl beolvasása és formázása (http://www.nlpr.ia.ac.cn/databases/Download/DGRLRead.cpp.pdf alapján)
     print("called")
     file = open(path, "rb")
     dgrlhsize, = struct.unpack('i', file.read(4))
@@ -19,16 +19,16 @@ def dgrlFileread(path,counter): # dgrl formátumú fájl beolvasása és formáz
     codelen, = struct.unpack('h', file.read(2))
     bittspp, = struct.unpack('h', file.read(2))
 
-    #ezek után az oldal adatai jönnek
+    # ezek után az oldal adatai jönnek
     pageHei, = struct.unpack('i', file.read(4))
     pageWid, = struct.unpack('i', file.read(4))
     lineNumber, = struct.unpack('i', file.read(4))
 
-    #itt kezdödnek a sorok adatai
+    # itt kezdödnek a sorok adatai
     for i in range(lineNumber):
         charNumber, = struct.unpack('i', file.read(4))
-        label = file.read(codelen*charNumber)
-        label=label.decode("gb2312", 'ignore').replace('\x00','')
+        label = file.read(codelen * charNumber)
+        label = label.decode("gb2312", 'ignore').replace('\x00', '')
         print(label)
         lineTop, = struct.unpack('i', file.read(4))
         lineLeft, = struct.unpack('i', file.read(4))
@@ -38,10 +38,10 @@ def dgrlFileread(path,counter): # dgrl formátumú fájl beolvasása és formáz
         for j in range(lineHei):
             lineImg.append(numpy.array(list(file.read(lineWid))))
         lineImg = numpy.array(lineImg)
-        imagepath="./results/img"+counter+str(i)+".png"
+        imagepath = "./results/img" + counter + str(i) + ".png"
         cv2.imwrite(imagepath, lineImg)
 
-        #Page xml template
+        # Page xml template
         xml_template = '''<?xml version="1.0" encoding="UTF-8"?>
         <PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2017-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2017-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2017-07-15/pagecontent.xsd">
         	<Metadata>
@@ -58,8 +58,9 @@ def dgrlFileread(path,counter): # dgrl formátumú fájl beolvasása és formáz
 			</TextLine>
 			</TextRegion>
         </Page></PcGts>'''
-        xml = xml_template.format(path="img"+counter+str(i)+".png" ,width=lineWid,height=lineHei,widthsub=lineWid-1,heightsub=lineHei-1, id=counter+str(i), unicode=label)
-        w = open(Path("./results/xml"+counter+str(i)+".xml"), "w")
+        xml = xml_template.format(path="img" + counter + str(i) + ".png", width=lineWid, height=lineHei,
+                                  widthsub=lineWid - 1, heightsub=lineHei - 1, id=counter + str(i), unicode=label)
+        w = open(Path("./results/xml" + counter + str(i) + ".xml"), "w")
         w.write(xml)
         w.close()
 
@@ -71,10 +72,8 @@ if __name__ == '__main__':
 
     args = argParser.parse_args()
     if args.path:
-        path=args.path
+        path = args.path
     index = 0
     for file in glob(path + "/*.dgrl"):
-
-        dgrlFileread(file, "f"+str(index)+"l")
+        dgrlFileread(file, "f" + str(index) + "l")
         index = index + 1
-
