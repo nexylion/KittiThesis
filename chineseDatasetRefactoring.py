@@ -41,7 +41,7 @@ def dgrlFileread(path,
         imagepath = "./results/img" + counter + str(i) + ".png"
         cv2.imwrite(imagepath, lineImg)
 
-        # Page xml template
+        # Page xml template https://kraken.re/main/ketos.html oldalon lévő példa alapján
         xml_template = '''<?xml version="1.0" encoding="UTF-8"?>
         <PcGts xmlns="http://schema.primaresearch.org/PAGE/gts/pagecontent/2017-07-15" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.primaresearch.org/PAGE/gts/pagecontent/2017-07-15 http://schema.primaresearch.org/PAGE/gts/pagecontent/2017-07-15/pagecontent.xsd">
         	<Metadata>
